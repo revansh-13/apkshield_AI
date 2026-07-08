@@ -1,0 +1,91 @@
+{
+    "android.permission.INTERNET": {
+        "protection_level": "normal",
+        "group": "Network"
+    },
+
+    "android.permission.ACCESS_NETWORK_STATE": {
+        "protection_level": "normal",
+        "group": "Network"
+    },
+
+    "android.permission.ACCESS_WIFI_STATE": {
+        "protection_level": "normal",
+        "group": "Network"
+    },
+
+    "android.permission.CHANGE_WIFI_STATE": {
+        "protection_level": "normal",
+        "group": "Network"
+    },
+
+    "android.permission.CAMERA": {
+        "protection_level": "dangerous",
+        "group": "Camera"
+    },
+
+    "android.permission.RECORD_AUDIO": {
+        "protection_level": "dangerous",
+        "group": "Microphone"
+    },
+
+    "android.permission.ACCESS_FINE_LOCATION": {
+        "protection_level": "dangerous",
+        "group": "Location"
+    },
+
+    "android.permission.ACCESS_COARSE_LOCATION": {
+        "protection_level": "dangerous",
+        "group": "Location"
+    },
+
+    "android.permission.READ_CONTACTS": {
+        "protection_level": "dangerous",
+        "group": "Contacts"
+    },
+
+    "android.permission.WRITE_CONTACTS": {
+        "protection_level": "dangerous",
+        "group": "Contacts"
+    },
+
+    "android.permission.READ_CALENDAR": {
+        "protection_level": "dangerous",
+        "group": "Calendar"
+    },
+
+    "android.permission.WRITE_CALENDAR": {
+        "protection_level": "dangerous",
+        "group": "Calendar"
+    },
+
+    "android.permission.READ_PHONE_STATE": {
+        "protection_level": "dangerous",
+        "group": "Phone"
+    },
+
+    "android.permission.CALL_PHONE": {
+        "protection_level": "dangerous",
+        "group": "Phone"
+    },
+
+    "android.permission.READ_EXTERNAL_STORAGE": {
+        "protection_level": "dangerous",
+        "group": "Storage"
+    },
+
+    "android.permission.WRITE_EXTERNAL_STORAGE": {
+        "protection_level": "dangerous",
+        "group": "Storage"
+    },
+
+    "android.permission.SEND_SMS": {
+        "protection_level": "dangerous",
+        "group": "SMS"
+    },
+
+    "android.permission.RECEIVE_SMS": {
+        "protection_level": "dangerous",
+        "group": "SMS"
+    }
+}

@@ -1,0 +1,74 @@
+#URLS RULES#
+RULE_HTTP_URL="URL-001"
+RULE_IP_ADDRESS_URL="URL-002"
+RULE_LOCALHOST_URL="URL-003"
+RULE_PRIVATE_NETWORK_URL="URL-004"
+RULE_SHORTENER_URL="URL-005"
+
+#certificate rules#
+RULE_EXPIRED_CERTIFICATE="CERT-001"
+RULE_DEBUG_CERTIFICATE="CERT-002"
+RULE_SHA1_CERTIFICATE="CERT-003"
+RULE_SELF_SIGNED_CERTIFICATE="CERT-004"
+
+#permission rules#
+RULE_SEND_SMS = "PERM-001"
+RULE_READ_SMS = "PERM-002"
+RULE_RECEIVE_SMS = "PERM-003"
+RULE_READ_CONTACTS = "PERM-004"
+RULE_RECORD_AUDIO = "PERM-005"
+RULE_SYSTEM_ALERT_WINDOW = "PERM-006"
+RULE_REQUEST_INSTALL_PACKAGES = "PERM-007"
+
+#MANIFEST RULES#
+RULE_DEBUGGABLE_APPLICATION="MAN-001"
+RULE_ALLOW_BACKUP_ENABLED="MAN-002"
+RULE_MISSING_TARGET_SDK="MAN-003"
+
+#COMPONENT RULES#
+
+
+
+
+#----------------------------------------#
+#   RISK WEIGHTS #
+#----------------------------------------#
+_RISK_WEIGHTS={
+    RULE_DEBUGGABLE_APPLICATION: 20,
+    RULE_ALLOW_BACKUP_ENABLED: 10,
+    RULE_MISSING_TARGET_SDK: 10,
+    RULE_HTTP_URL: 10,
+    RULE_IP_ADDRESS_URL: 10,
+    RULE_LOCALHOST_URL: 5,
+    RULE_PRIVATE_NETWORK_URL: 5,
+    RULE_SHORTENER_URL: 5,
+    RULE_SEND_SMS: 20,
+    RULE_READ_SMS: 15,
+    RULE_EXPIRED_CERTIFICATE: 15,
+    RULE_DEBUG_CERTIFICATE: 20,
+    RULE_SHA1_CERTIFICATE: 15,
+    RULE_SELF_SIGNED_CERTIFICATE: 5,
+    RULE_RECEIVE_SMS: 15,
+    RULE_READ_CONTACTS: 10,
+    RULE_RECORD_AUDIO: 15,
+    RULE_SYSTEM_ALERT_WINDOW: 20,
+    RULE_REQUEST_INSTALL_PACKAGES: 25,
+}
+
+def get_weight(rule_id: str) -> int:
+    """
+    Get the weight for a given rule ID.
+
+    Args:
+        rule_id: Unique identifier for the detection rule.
+
+    Returns:
+        Weight associated with the rule ID.
+
+    Raises:
+        KeyError: If the rule ID is not defined.
+
+    """
+    if rule_id not in _RISK_WEIGHTS:
+        raise KeyError(f"Unknown rule ID :{rule_id}")
+    return _RISK_WEIGHTS[rule_id]

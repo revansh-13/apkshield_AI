@@ -12,7 +12,7 @@ from app.core.parsers import (
 from app.core.Risk_Engine import (
     calculate_risk,
 )
-
+from app.core.AI.engine import generate_ai_report
 
 def analyze_apk(saved_path: str) -> dict:
     """
@@ -28,13 +28,15 @@ def analyze_apk(saved_path: str) -> dict:
     apk_objects = load_apk(saved_path)
     if not apk_objects["success"]:
         return apk_objects
-
+    
+    
     parser_output = parse_apk(apk_objects)
-
     risk_report = calculate_risk(parser_output)
+    ai_report =generate_ai_report(risk_report)
     
 
     return {
         "analysis": parser_output,
         "risk": risk_report,
+        "ai" : ai_report,
     }

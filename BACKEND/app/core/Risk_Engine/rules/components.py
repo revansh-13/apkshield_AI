@@ -25,6 +25,7 @@ def _evaluate_exported_activity(component: dict) -> dict | None:
     Detect exported Android activities.
 
     Args:
+    
         component: Parsed Android component.
 
     Returns:

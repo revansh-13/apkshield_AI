@@ -58,5 +58,7 @@ Sprint 4 - Completed
 
 Sprint 5 - Completed
 
+Sprint 6 - Completed
+
 
 

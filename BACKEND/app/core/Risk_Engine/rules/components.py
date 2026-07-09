@@ -30,7 +30,7 @@ def _evaluate_exported_activity(component: dict) -> dict | None:
     Returns:
         Finding if the activity is exported, otherwise None.
     """
-    print("RULE EXECUTED:", component)
+   
     # Only evaluate activities.
     if component.get("type") != "activity":
         return None

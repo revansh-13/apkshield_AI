@@ -20,6 +20,9 @@ from app.core.Risk_Engine.evaluators.manifest import (
 from app.core.Risk_Engine.evaluators.components import(
     evaluate_components
 )
+from app.core.Risk_Engine.evaluators.strings import(
+    evaluate_strings
+)
 
 #
 # Registry of all risk evaluators.
@@ -34,7 +37,9 @@ _EVALUATOR_REGISTRY = {
 
     "manifest": evaluate_manifest,
 
-    "components": evaluate_components
+    "components": evaluate_components,
+
+    "strings": evaluate_strings,
 
 }
 

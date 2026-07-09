@@ -27,22 +27,117 @@ ANDROID_NS = "{http://schemas.android.com/apk/res/android}"
 
 def _create_component_record(
     *,
+    component_type,
     name,
     exported=None,
     enabled=None,
     permission=None,
+    process= None,
+    intent_filters= None,
+    authorities= None,
 ):
     """
     Build a standardized Android component record.
     """
 
     return {
+        "type": component_type,
         "name": name,
         "short_name": name.split(".")[-1],
         "exported": exported,
         "enabled": enabled,
-        "permission": permission,
+        "permission": permission,   
+        "process": process,
+        "intent_filters": intent_filters or [],
+        "authorities": authorities,
+
     }
+
+def _extract_process(element):
+    """
+    Extract the android:process attribute.
+    """
+
+    return element.get(f"{ANDROID_NS}process")
+
+def _extract_authorities(element):
+    """
+    Extract the android:authorities attribute.
+    """
+
+    return element.get(f"{ANDROID_NS}authorities")
+
+
+def _extract_intent_filter(intent_filter):
+    """
+    Extract a single Android intent-filter.
+    """
+
+    actions = []
+    categories = []
+    data = []
+
+    # ------------------------------------------------------------------
+    # Actions
+    # ------------------------------------------------------------------
+
+    for action in intent_filter.findall("action"):
+
+        action_name = action.get(f"{ANDROID_NS}name")
+
+        if action_name:
+            actions.append(action_name)
+
+    # ------------------------------------------------------------------
+    # Categories
+    # ------------------------------------------------------------------
+
+    for category in intent_filter.findall("category"):
+
+        category_name = category.get(f"{ANDROID_NS}name")
+
+        if category_name:
+            categories.append(category_name)
+
+    # ------------------------------------------------------------------
+    # Data
+    # ------------------------------------------------------------------
+
+    for data_element in intent_filter.findall("data"):
+
+        data.append(
+            {
+                "scheme": data_element.get(f"{ANDROID_NS}scheme"),
+                "host": data_element.get(f"{ANDROID_NS}host"),
+                "port": data_element.get(f"{ANDROID_NS}port"),
+                "path": data_element.get(f"{ANDROID_NS}path"),
+                "pathPrefix": data_element.get(f"{ANDROID_NS}pathPrefix"),
+                "pathPattern": data_element.get(f"{ANDROID_NS}pathPattern"),
+                "mimeType": data_element.get(f"{ANDROID_NS}mimeType"),
+            }
+        )
+
+    return {
+        "actions": actions,
+        "categories": categories,
+        "data": data,
+    }
+
+def _extract_intent_filters(element):
+    """
+    Extract all intent-filters declared by a component.
+    """
+
+    intent_filters = []
+
+    for intent_filter in element.findall("intent-filter"):
+
+        intent_filters.append(
+            _extract_intent_filter(intent_filter)
+        )
+
+    return intent_filters
+
 
 def _normalize_component_name(
     package_name: str,
@@ -123,6 +218,9 @@ def _create_component_collection(
         exported = None
         enabled = None
         permission = None
+        process = None
+        intent_filters= []
+        authorities =None
 
         if element is not None:
 
@@ -135,13 +233,26 @@ def _create_component_collection(
             )
 
             permission = element.get(f"{ANDROID_NS}permission")
+            process = _extract_process(element)
+
+            intent_filters = _extract_intent_filters(element)
+            print(_extract_intent_filters(element))
+
+            authorities = None
+
+            if tag_name == "provider":
+                authorities = _extract_authorities(element)
 
         component_records.append(
             _create_component_record(
+                component_type=tag_name,
                 name=component_name,
                 exported=exported,
                 enabled=enabled,
                 permission=permission,
+                process=process,
+                intent_filters=intent_filters,
+                authorities=authorities
             )
         )
 

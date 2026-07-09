@@ -8,6 +8,7 @@ from .permissions import parse_permissions
 from .components import parse_components
 from .urls import parse_urls
 from .certificates import parse_certificates
+from .strings import parse_strings
 
 
 # ============================================================================
@@ -41,9 +42,13 @@ PARSERS_REGISTRY = {
         "input": INPUT_ANALYSIS,
     },
     "certificates": {
-    "parser": parse_certificates,
-    "input": INPUT_APK,
+        "parser": parse_certificates,
+        "input": INPUT_APK,
     },
+    "strings": {
+        "parser": parse_strings,
+        "input": INPUT_DEX
+    }
 }
 
 
@@ -71,6 +76,8 @@ def _run_parser(parser_function, parser_input) -> dict:
 
     except Exception as error:
 
+        import traceback
+        traceback.print_exc()
         execution_time = (time.perf_counter() - start_time) * 1000
 
         return {

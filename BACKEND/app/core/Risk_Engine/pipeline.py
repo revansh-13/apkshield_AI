@@ -17,6 +17,9 @@ from app.core.Risk_Engine.evaluators.certificates import (
 from app.core.Risk_Engine.evaluators.manifest import (  
     evaluate_manifest,
 )
+from app.core.Risk_Engine.evaluators.components import(
+    evaluate_components
+)
 
 #
 # Registry of all risk evaluators.
@@ -30,6 +33,8 @@ _EVALUATOR_REGISTRY = {
     "certificates": evaluate_certificates,
 
     "manifest": evaluate_manifest,
+
+    "components": evaluate_components
 
 }
 

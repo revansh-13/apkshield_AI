@@ -1,4 +1,4 @@
-import { LucideIcon, Upload, LayoutDashboard, History, Settings } from "lucide-react";
+import { LucideIcon, Upload, LayoutDashboard, FileSearch, History, Settings } from "lucide-react";
 
 export interface AppNavLink {
   label: string;
@@ -17,6 +17,11 @@ export const APP_NAV_LINKS: AppNavLink[] = [
     label: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    label: "Findings",
+    href: "/findings",
+    icon: FileSearch,
   },
   {
     label: "History",

@@ -2,6 +2,7 @@ import { Finding } from "@/shared/types/analysis";
 import { FindingRow } from "./FindingRow";
 import { ArrowRight, FileSearch } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface FindingsPreviewProps {
   findings: Finding[];
@@ -35,17 +36,17 @@ export function FindingsPreview({ findings }: FindingsPreviewProps) {
         ))}
       </div>
 
-      <button
-        disabled
+      <Link
+        href="/findings"
         className={cn(
           "group mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card p-4",
-          "text-sm font-medium text-muted-foreground cursor-not-allowed transition-colors"
+          "text-sm font-medium text-foreground hover:bg-accent transition-colors",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         )}
-        aria-label="View all findings (Available in future release)"
       >
-        View All {findings.length} Findings (Findings Explorer coming in F2.5)
-        <ArrowRight className="h-4 w-4" aria-hidden="true" />
-      </button>
+        View All {findings.length} Findings
+        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+      </Link>
     </section>
   );
 }

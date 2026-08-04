@@ -32,6 +32,100 @@ export const MOCK_ANALYSIS_RESULT: AnalysisResult = {
     mostCriticalIssues: "The most critical vulnerabilities include a hardcoded AWS S3 bucket credential in the DEX bytecode and an exported Activity (`TransferActivity`) that lacks permission checks, potentially allowing malicious apps to bypass authentication.",
     recommendedNextSteps: "Immediately rotate the exposed AWS credentials and remove them from the source code. Enforce signature-level permissions on all exported activities and services. Upgrade all HTTP endpoints to strictly enforce HTTPS with certificate pinning."
   },
+  aiReport: {
+    executiveSummary: "APKShield AI Security Analysis evaluated `com.example.bankapp_v2.4.1.apk` across 28 security rules. The application demonstrates a high risk posture driven by 3 critical vulnerabilities—most notably exposed cloud infrastructure keys and unprotected exported application components. Prompt remediation of credential leaks and component permission models is strongly advised prior to production deployment.",
+    overallRiskLabel: "High Exposure",
+    mostCriticalIssue: "Hardcoded AWS Access Key ID and Secret Key in DEX bytecode (`S3Helper.class`) coupled with an unprotected exported `TransferActivity`.",
+    positiveFindings: [
+      "Target SDK set to API 33 (Android 13), leveraging modern system sandbox defenses.",
+      "No dynamic code loading (DexClassLoader) or dangerous runtime reflection detected.",
+      "Clean manifest structure without superuser or root escalation permissions."
+    ],
+    remainingConcerns: [
+      "Insecure cleartext HTTP endpoints detected in network strings configuration.",
+      "Legacy backup permissions (`android:allowBackup=\"true\"`) expose application state via ADB.",
+      "Debug keystore certificate detected on release package build artifact."
+    ],
+    threatThemes: [
+      {
+        id: "theme_001",
+        title: "Hardcoded Cloud Credentials & API Keys",
+        severity: "critical",
+        findingCount: 3,
+        description: "Static analysis detected embedded AWS S3 access keys, Firebase server keys, and database passwords directly in compiled DEX classes and resource strings."
+      },
+      {
+        id: "theme_002",
+        title: "Exported Component Attack Surface",
+        severity: "critical",
+        findingCount: 3,
+        description: "Multiple Activities and ContentProviders are exported without permission checks, allowing third-party Android apps to launch sensitive flows or read private app databases."
+      },
+      {
+        id: "theme_003",
+        title: "Cleartext Traffic & Network Misconfigurations",
+        severity: "high",
+        findingCount: 4,
+        description: "Application permits cleartext HTTP endpoints and disables mixed content restrictions in WebViews, exposing network payloads to Man-in-the-Middle (MitM) interception."
+      },
+      {
+        id: "theme_004",
+        title: "Signing Certificate & Integrity Deficiencies",
+        severity: "medium",
+        findingCount: 3,
+        description: "APK is signed with a debug keystore using deprecated SHA1withRSA signature algorithms, compromising binary provenance and update verification."
+      }
+    ],
+    recommendations: [
+      {
+        id: "rec_001",
+        title: "Rotate Exposed AWS & Firebase Secrets Immediately",
+        priority: "critical",
+        summary: "Extract hardcoded credentials from DEX bytecode and invalidate compromised keys on cloud provider console.",
+        actionSteps: [
+          "Revoke key `AKIA...` on AWS IAM console immediately.",
+          "Refactor `S3Helper.java` to fetch temporary credentials via backend API gateway.",
+          "Remove Firebase FCM server key from client app assets."
+        ],
+        impact: "Prevents unauthorized cloud storage access and infrastructure cost exploitation."
+      },
+      {
+        id: "rec_002",
+        title: "Secure Exported Activities & Content Providers",
+        priority: "critical",
+        summary: "Enforce `android:exported=\"false\"` on non-public components or protect them with signature-level permissions.",
+        actionSteps: [
+          "Update `AndroidManifest.xml` to set `android:exported=\"false\"` on `TransferActivity`.",
+          "Add signature permission checks to `UserDataProvider` content provider."
+        ],
+        impact: "Blocks malicious local applications from launching unauthorized fund transfers or stealing database contents."
+      },
+      {
+        id: "rec_003",
+        title: "Enforce HTTPS & Disable Cleartext Network Traffic",
+        priority: "high",
+        summary: "Upgrade all HTTP URLs to HTTPS and enforce network security configurations.",
+        actionSteps: [
+          "Change `http://api.dev.example.com` to `https://api.dev.example.com` in `strings.xml`.",
+          "Create `network_security_config.xml` setting `cleartextTrafficPermitted=\"false\"`."
+        ],
+        impact: "Protects sensitive user data in transit from wireless eavesdropping and MitM tampering."
+      },
+      {
+        id: "rec_004",
+        title: "Re-Sign Package with Release Certificate (SHA256)",
+        priority: "medium",
+        summary: "Replace debug signing key with a production release keystore using SHA-256.",
+        actionSteps: [
+          "Generate a production RSA-4096 release keystore.",
+          "Sign release APK with apksigner using SHA256withRSA signature scheme."
+        ],
+        impact: "Ensures package integrity, prevents tampering, and complies with Play Store security baselines."
+      }
+    ],
+    confidenceScore: 94,
+    confidenceLevel: "High"
+  },
   findings: [
     // ── CRITICAL ──────────────────────────────────────────
     {

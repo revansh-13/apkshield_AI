@@ -2,6 +2,7 @@ import { AnalysisHeader } from "./AnalysisHeader";
 import { MetadataCard } from "./MetadataCard";
 import { RiskScoreCard } from "./RiskScoreCard";
 import { AISummaryCard } from "./AISummaryCard";
+import { AIReport } from "@/app/features/ai/AIReport";
 import { StatCard } from "./StatCard";
 import { FindingsPreview } from "./FindingsPreview";
 import { ExportCard } from "./ExportCard";
@@ -28,8 +29,12 @@ export function DashboardContainer() {
       {/* 3. Risk Score Hero */}
       <RiskScoreCard score={data.riskScore} level={data.riskLevel} />
 
-      {/* 4. AI Summary (Moved up based on feedback) */}
-      <AISummaryCard summary={data.aiSummary} />
+      {/* 4. AI Report Section (Expanded structured report) */}
+      {data.aiReport ? (
+        <AIReport report={data.aiReport} metadata={data.metadata} />
+      ) : (
+        <AISummaryCard summary={data.aiSummary} />
+      )}
 
       {/* 5. Summary Statistics Grid */}
       <section aria-labelledby="stats-heading">

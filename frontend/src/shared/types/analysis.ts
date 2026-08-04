@@ -31,6 +31,35 @@ export interface AISummary {
   recommendedNextSteps: string;
 }
 
+export interface ThreatTheme {
+  id: string;
+  title: string;
+  severity: Severity;
+  findingCount: number;
+  description: string;
+}
+
+export interface RemediationRecommendation {
+  id: string;
+  title: string;
+  priority: Severity;
+  summary: string;
+  actionSteps: string[];
+  impact: string;
+}
+
+export interface AIAnalysisReport {
+  executiveSummary: string;
+  overallRiskLabel: string;
+  mostCriticalIssue: string;
+  positiveFindings: string[];
+  remainingConcerns: string[];
+  threatThemes: ThreatTheme[];
+  recommendations: RemediationRecommendation[];
+  confidenceScore: number; // e.g. 92
+  confidenceLevel: "High" | "Medium" | "Low";
+}
+
 export interface AnalysisSummary {
   totalFindings: number;
   severityCounts: {
@@ -50,5 +79,6 @@ export interface AnalysisResult {
   metadata: AnalysisMetadata;
   summary: AnalysisSummary;
   aiSummary: AISummary;
+  aiReport?: AIAnalysisReport;
   findings: Finding[];
 }

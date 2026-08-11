@@ -2,6 +2,8 @@ export type Severity = "critical" | "high" | "medium" | "low" | "info";
 
 export type FindingCategory = "Manifest" | "Permissions" | "Components" | "URLs" | "Certificates" | "Strings" | "Code";
 
+export type EvidenceValue = string | number | boolean | null | string[];
+
 export interface Finding {
   id: string;
   rule_id: string;
@@ -10,6 +12,9 @@ export interface Finding {
   severity: Severity;
   category: FindingCategory;
   recommendation: string;
+  evidence?: Record<string, EvidenceValue>;
+  aiExplanation?: string;
+  aiImpact?: string;
 }
 
 export interface AnalysisMetadata {

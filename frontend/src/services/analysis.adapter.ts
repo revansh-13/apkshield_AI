@@ -98,18 +98,31 @@ export function transformBackendResponse(
     // Backend findings do not include `recommendation` in the Risk Engine.
     // Per-finding recommendations come from the AI report `findings` array.
     recommendation: '',
+    evidence: (f.evidence as Record<string, import('@/shared/types/analysis').EvidenceValue>) || undefined,
   }));
 
-  // Build an AI-finding lookup so we can attach per-finding recommendations
-  const aiRecommendationMap = new Map<string, string>(
-    (ai.findings ?? []).map(af => [af.rule_id, af.recommendation ?? ''])
+  // Build an AI-finding lookup so we can attach per-finding recommendations and context securely by rule_id
+  const aiContextMap = new Map<string, { recommendation: string; explanation: string; impact: string }>(
+    (ai.findings ?? []).map(af => [
+      af.rule_id, 
+      {
+        recommendation: af.recommendation ?? '',
+        explanation: af.explanation ?? '',
+        impact: af.security_impact ?? '',
+      }
+    ])
   );
 
-  // Attach AI recommendations to findings where available
-  const enrichedFindings: Finding[] = findings.map(f => ({
-    ...f,
-    recommendation: aiRecommendationMap.get(f.rule_id) ?? '',
-  }));
+  // Attach AI recommendations and contextual explanation to findings where available
+  const enrichedFindings: Finding[] = findings.map(f => {
+    const aiCtx = aiContextMap.get(f.rule_id);
+    return {
+      ...f,
+      recommendation: aiCtx?.recommendation ?? '',
+      aiExplanation: aiCtx?.explanation || undefined,
+      aiImpact: aiCtx?.impact || undefined,
+    };
+  });
 
   // ── Severity Counts ──────────────────────────────────────────────────────
   const severityCounts = {

@@ -138,27 +138,48 @@ export function FindingCard({ finding, isExpanded, onToggle }: FindingCardProps)
                 </p>
               </div>
 
-              {/* Future placeholder: Technical Details */}
-              <div className="rounded-lg border border-dashed border-border bg-muted/30 p-4">
-                <h4 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
-                  <Code2 className="h-3.5 w-3.5" aria-hidden="true" />
-                  Technical Details
-                </h4>
-                <p className="text-xs text-muted-foreground">
-                  Detailed technical analysis and code references will appear here in a future release.
-                </p>
-              </div>
+              {/* Technical Details (Evidence) */}
+              {finding.evidence && Object.keys(finding.evidence).length > 0 ? (
+                <div className="rounded-lg border border-border bg-muted/30 p-4">
+                  <h4 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                    <Code2 className="h-3.5 w-3.5" aria-hidden="true" />
+                    Technical Evidence
+                  </h4>
+                  <div className="overflow-x-auto rounded-md bg-background/50 border border-border/50 p-3 max-h-48 overflow-y-auto">
+                    <pre className="text-[11px] text-muted-foreground font-mono leading-relaxed whitespace-pre-wrap break-words">
+                      {JSON.stringify(finding.evidence, null, 2)}
+                    </pre>
+                  </div>
+                </div>
+              ) : null}
 
-              {/* Future placeholder: AI Explanation */}
-              <div className="rounded-lg border border-dashed border-primary/20 bg-primary/5 p-4">
-                <h4 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
-                  <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
-                  AI Explanation
-                </h4>
-                <p className="text-xs text-muted-foreground">
-                  AI-generated contextual explanation and remediation guidance will appear here in a future release.
-                </p>
-              </div>
+              {/* AI Context (Explanation & Impact) */}
+              {(finding.aiExplanation || finding.aiImpact) ? (
+                <div className="rounded-lg border border-primary/20 bg-primary/5 p-4 space-y-3">
+                  <h4 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary mb-2">
+                    <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+                    AI Context
+                  </h4>
+                  
+                  {finding.aiExplanation && (
+                    <div>
+                      <span className="text-xs font-semibold text-foreground/80 block mb-1">Explanation</span>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {finding.aiExplanation}
+                      </p>
+                    </div>
+                  )}
+
+                  {finding.aiImpact && (
+                    <div>
+                      <span className="text-xs font-semibold text-foreground/80 block mb-1">Security Impact</span>
+                      <p className="text-sm text-muted-foreground leading-relaxed border-l-2 border-risk-high/30 pl-3">
+                        {finding.aiImpact}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ) : null}
             </div>
           </motion.div>
         )}

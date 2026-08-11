@@ -1,5 +1,4 @@
 import { FileBox, X } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface FilePreviewProps {
   file: File;

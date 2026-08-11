@@ -1,7 +1,7 @@
 "use client";
 
 import { RemediationRecommendation, Severity } from "@/shared/types/analysis";
-import { ChevronDown, CheckSquare, ShieldCheck, ArrowRight } from "lucide-react";
+import { ChevronDown, CheckSquare, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 

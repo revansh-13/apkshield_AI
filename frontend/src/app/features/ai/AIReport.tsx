@@ -10,6 +10,8 @@ import { ConfidenceCard } from "./ConfidenceCard";
 import { ActionCard } from "./ActionCard";
 import { DisclaimerCard } from "./DisclaimerCard";
 
+import { formatDeterministicDate } from "@/lib/date";
+
 interface AIReportProps {
   report: AIAnalysisReport;
   metadata: AnalysisMetadata;
@@ -19,7 +21,7 @@ export function AIReport({ report, metadata }: AIReportProps) {
   const handleCopyReport = () => {
     const textToCopy = `
 APKShield AI Security Report - ${metadata.apkName}
-Generated: ${new Date(metadata.timestamp).toLocaleString()}
+Generated: ${formatDeterministicDate(metadata.timestamp)}
 
 === EXECUTIVE SUMMARY ===
 ${report.executiveSummary}

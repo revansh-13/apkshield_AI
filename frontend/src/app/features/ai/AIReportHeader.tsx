@@ -1,19 +1,15 @@
 import { Sparkles, Bot } from "lucide-react";
 import { AI_MODEL_NAME } from "./constants";
 
+import { formatDeterministicDate } from "@/lib/date";
+
 interface AIReportHeaderProps {
   apkName: string;
   timestamp: string;
 }
 
 export function AIReportHeader({ apkName, timestamp }: AIReportHeaderProps) {
-  const formattedDate = new Date(timestamp).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const formattedDate = formatDeterministicDate(timestamp);
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6">

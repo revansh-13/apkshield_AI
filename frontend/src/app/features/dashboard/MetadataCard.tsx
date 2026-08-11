@@ -1,12 +1,14 @@
 import { AnalysisMetadata } from "@/shared/types/analysis";
-import { Package, Hash, Calendar, FileBox, Cpu } from "lucide-react";
+import { Package, Hash, Calendar, Cpu } from "lucide-react";
+
+import { formatDeterministicDate } from "@/lib/date";
 
 interface MetadataCardProps {
   metadata: AnalysisMetadata;
 }
 
 export function MetadataCard({ metadata }: MetadataCardProps) {
-  const date = new Date(metadata.timestamp).toLocaleString();
+  const date = formatDeterministicDate(metadata.timestamp);
 
   return (
     <section aria-labelledby="metadata-heading" className="bg-card rounded-xl border border-border p-6 shadow-sm">

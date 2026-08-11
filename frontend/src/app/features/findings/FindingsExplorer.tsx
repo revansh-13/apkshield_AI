@@ -6,7 +6,6 @@ import { FindingsToolbar } from "./FindingsToolbar";
 import { FindingCard } from "./FindingCard";
 import { FindingsEmptyState } from "./FindingsEmptyState";
 import { SEVERITY_LABELS } from "./constants";
-import { cn } from "@/lib/utils";
 import { X, FileSearch } from "lucide-react";
 
 // ── Active Filter Chips ───────────────────────────────────
@@ -109,7 +108,6 @@ export function FindingsExplorer({ findings }: FindingsExplorerProps) {
     expandedIds,
     filteredFindings,
     totalCount,
-    hasActiveFilters,
     setSearch,
     removeSearch,
     toggleSeverity,

@@ -4,7 +4,7 @@ import {
   BackendUploadResponse, 
   BackendAnalyzeResponse 
 } from './analysis.adapter';
-import { AnalysisResult } from '@/shared/types/analysis';
+import { AnalysisResult, HistorySummary } from '@/shared/types/analysis';
 
 /**
  * AnalysisService
@@ -77,7 +77,10 @@ class AnalysisService {
       // No progress percentage is available — the backend does not stream it.
       const analyzeResponse = await apiClient.post<BackendAnalyzeResponse>(
         '/analyze',
-        { saved_path: savedPath },
+        { 
+          saved_path: savedPath,
+          metadata: uploadData.metadata 
+        },
         {
           signal: abortController.signal,
           headers: { 'Content-Type': 'application/json' },
@@ -111,6 +114,37 @@ class AnalysisService {
       this.currentAbortController.abort();
       this.currentAbortController = null;
     }
+  }
+
+  /**
+   * Retrieve a list of historical analyses.
+   */
+  async getHistoryList(): Promise<HistorySummary[]> {
+    const response = await apiClient.get('/history');
+    return response.data.history || [];
+  }
+
+  /**
+   * Retrieve a specific historical analysis by ID.
+   */
+  async getHistoryItem(analysisId: string): Promise<AnalysisResult> {
+    const response = await apiClient.get(`/history/${analysisId}`);
+    const record = response.data.record;
+    
+    // We assume analysisTimeMs wasn't persisted accurately or isn't crucial for history view
+    // so we pass 0 or a stored value if it exists.
+    return transformBackendResponse(
+      record.result,
+      record.metadata,
+      0 
+    );
+  }
+
+  /**
+   * Delete a historical analysis by ID.
+   */
+  async deleteHistoryItem(analysisId: string): Promise<void> {
+    await apiClient.delete(`/history/${analysisId}`);
   }
 }
 

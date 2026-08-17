@@ -87,3 +87,14 @@ export interface AnalysisResult {
   aiReport?: AIAnalysisReport;
   findings: Finding[];
 }
+
+export interface HistorySummary {
+  analysis_id: string;
+  apkName: string;
+  fileSizeMb: number;
+  riskScore: number;
+  riskLevel: Severity;
+  totalFindings: number;
+  severityCounts: Record<Severity, number>;
+  timestamp: string;
+}

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.api.upload import router as upload_router
 from app.api.analysis import router as analysis_router
+from app.api.history import router as history_router
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -19,6 +20,7 @@ app.add_middleware(
 )
 app.include_router(upload_router)
 app.include_router(analysis_router)
+app.include_router(history_router)
 
 @app.get("/")
 def root():

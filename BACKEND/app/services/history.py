@@ -1,12 +1,22 @@
 import os
 import json
 import re
-from datetime import datetime
+from datetime import date, datetime
 from fastapi import HTTPException
 
 # Storage directory
 STORAGE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "storage", "analyses")
 os.makedirs(STORAGE_DIR, exist_ok=True)
+
+def _json_safe(value):
+    """Convert supported non-JSON-native values for persistence only."""
+    if isinstance(value, (datetime, date)):
+        return value.isoformat()
+    if isinstance(value, dict):
+        return {_json_safe(key): _json_safe(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_json_safe(item) for item in value]
+    return value
 
 def _is_valid_uuid(val: str) -> bool:
     """Validate that the string is a valid UUID to prevent path traversal."""
@@ -34,8 +44,9 @@ def save_analysis(upload_id: str, metadata: dict, result: dict) -> dict:
     }
     
     file_path = _get_file_path(upload_id)
+    serializable_record = _json_safe(record)
     with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(record, f, ensure_ascii=False, indent=2)
+        json.dump(serializable_record, f, ensure_ascii=False, indent=2)
         
     return record
 
